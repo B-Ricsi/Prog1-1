@@ -8,15 +8,25 @@ int main()
 {
 	Simple_window win{Point{100,100}, 800, 1000, "DRILL13"};
 
+	Lines negyzet;
 
-Vector_ref<Rectangle> negyzet;
-
-	for(int i = 0; i < 8; ++i)
+	for (int i = 100; i < 800; i+=100)
 	{
-		negyzet.push_back(new Rectangle{Point{i*100,i*100}, 100, 100});
-		negyzet[negyzet.size()-1].set_fill_color(Color::red);
-		win.attach(negyzet[negyzet.size()-1]);
+		negyzet.add(Point{i,0},Point{i,800});
+		negyzet.add(Point{0,i},Point{800,i});
 	}
+
+	win.attach(negyzet);
+
+	Vector_ref<Rectangle> piros_negyzet;
+
+	for(int i=0;i<8;i++)
+	{
+		piros_negyzet.push_back(new Rectangle {Point{i*100,i*100}, 100, 100});
+		piros_negyzet[i].set_fill_color(Color::red);
+		win.attach(piros_negyzet[i]);
+	}
+
 	Vector_ref<Image> img;
 	img.push_back(new Image(Point{0,200}, "image.jpg"));
 	img.push_back(new Image(Point{0,400}, "imageb.jpg"));
@@ -32,20 +42,20 @@ Vector_ref<Rectangle> negyzet;
 	win.attach(img[0]);
 	win.attach(img[1]);
 	win.attach(img[2]);
-	int x,y=0;
-	while(win.wait_for_button())
+	for (int i = 0; i < 8; ++i)
 	{
-		if (x<=700 && y<=700)
+		for (int j = 0; j < 8; ++j)
 		{
-			logo.move(100,100);
-			x+=100;
-			y+=100;
-		}else
-		{
-			logo.move(-800,-800);
-			x=0;
-			y=0;
+			win.wait_for_button();
+			if (j<7)
+			{
+				logo.move(100,0);
+			}else
+			{
+				logo.move(-700,100);
+			}
 		}
 	}
+	win.wait_for_button();
 	
 }
